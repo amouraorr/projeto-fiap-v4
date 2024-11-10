@@ -18,5 +18,4 @@ public class OpenApiConfig {
                         .description("Desenvolver um backend completo e robusto utilizando o framework\n" +
                                 "Spring Boot"));
     }
-
 }
