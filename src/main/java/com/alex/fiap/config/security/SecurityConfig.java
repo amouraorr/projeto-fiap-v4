@@ -1,3 +1,8 @@
+
+
+/*
+
+
 package com.alex.fiap.config.security;
 
 import org.springframework.context.annotation.Bean;
@@ -27,3 +32,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+ */

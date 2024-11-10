@@ -45,10 +45,14 @@ public class User {
     @Valid
     private Endereco endereco;
 
-
-    @Schema(description = "Tipo de usuário: 'cliente' ou 'dono do restaurante'")
-    //@NotBlank(message = "O tipo não pode ser vazio")
+    @NotBlank(message = "O tipo não pode ser vazio")
     @Pattern(regexp = "^(cliente|dono do restaurante)$", message = "O tipo deve ser 'cliente' ou 'dono do restaurante'")
     private String tipo;
 
+    /*
+    @Schema(description = "Tipo de usuário: 'cliente' ou 'dono do restaurante'")
+    @NotBlank(message = "O tipo não pode ser vazio")
+    @Pattern(regexp = "^(cliente|dono do restaurante)$", message = "O tipo deve ser 'cliente' ou 'dono do restaurante'")
+    private String tipo;
+*/
 }

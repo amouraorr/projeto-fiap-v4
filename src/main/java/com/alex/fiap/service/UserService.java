@@ -8,7 +8,7 @@ import com.alex.fiap.model.Endereco;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
@@ -22,18 +22,24 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    //@Autowired
+    //private PasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
 
         if (user instanceof Customer) {
+            user.setTipo("cliente");
+        } else if (user instanceof RestaurantOwner) {
+            user.setTipo("dono do restaurante");
+        }
+
+        /*
+        if (user instanceof Customer) {
             user.setTipo("customer");
         } else if (user instanceof RestaurantOwner) {
             user.setTipo("owner");
-
         }
-
+        */
         user.setNome(user.getNome());
         user.setEmail(user.getEmail());
 
@@ -50,7 +56,7 @@ public class UserService {
 
         // Verifique se a senha não é nula antes de codificá-la
         if (user.getSenha() != null) {
-            user.setSenha(passwordEncoder.encode(user.getSenha()));
+            //user.setSenha(passwordEncoder.encode(user.getSenha()));
         } else {
             throw new IllegalArgumentException("Senha não pode ser nula");
         }
@@ -87,11 +93,11 @@ public class UserService {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            boolean matches = passwordEncoder.matches(senha, user.getSenha());
+            //boolean matches = passwordEncoder.matches(senha, user.getSenha());
             LOGGER.info("Senha fornecida: {}", senha);
             LOGGER.info("Hash armazenado: {}", user.getSenha());
-            LOGGER.info("Validação: {}", matches);
-            return matches;
+            //LOGGER.info("Validação: {}", matches);
+            //return matches;
         }
         return false;
     }
@@ -106,7 +112,7 @@ public class UserService {
 
     public Optional<User> changePassword(Long id, String newPassword) {
         return userRepository.findById(id).map(user -> {
-            user.setSenha(passwordEncoder.encode(newPassword));
+            //user.setSenha(passwordEncoder.encode(newPassword));
             return userRepository.save(user);
         });
     }
