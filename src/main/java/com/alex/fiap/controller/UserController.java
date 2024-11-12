@@ -56,7 +56,6 @@ public class UserController {
                 });
     }
 
-
     @GetMapping
     @Operation(summary = "Listar todos os usuários", description = "Retorna uma lista de todos os usuários cadastrados.")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
