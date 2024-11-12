@@ -1,5 +1,6 @@
 package com.alex.fiap.controller;
 
+import com.alex.fiap.exception.UserNotFoundException;
 import com.alex.fiap.mapper.UserMapper;
 import com.alex.fiap.model.User;
 import com.alex.fiap.request.UserRequest;
@@ -90,23 +91,37 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
         return userService.updateUser(id, userRequest) // Passa diretamente o UserRequest
                 .map(updatedUser -> ResponseEntity.ok(new ApiResponse<>(userMapper.toDto(updatedUser), null)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Excluir usuário", description = "Exclui um usuário com base no ID fornecido.")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        LOGGER.info("Usuário com ID {} foi deletado", id);
-        return ResponseEntity.noContent().build();
+                .orElseGet(() -> {
+                    String errorMessage = String.format("Usuário com ID %d não encontrado.", id);
+                    LOGGER.error(errorMessage); // Log da mensagem de erro
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(errorMessage)); // Retorna a mensagem de erro
+                });
     }
 
     @PatchMapping("/{id}/change-password")
     @Operation(summary = "Alterar senha", description = "Altera a senha de um usuário com base no ID fornecido.")
     public ResponseEntity<ApiResponse<UserResponse>> changePassword(@PathVariable Long id, @RequestBody Map<String, String> passwordMap) {
         String newPassword = passwordMap.get("newPassword");
+
         return userService.changePassword(id, newPassword)
                 .map(user -> ResponseEntity.ok(new ApiResponse<>(userMapper.toDto(user), null)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> {
+                    String errorMessage = String.format("Usuário com ID %d não encontrado.", id);
+                    LOGGER.error(errorMessage); // Log da mensagem de erro
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(errorMessage)); // Retorna a mensagem de erro
+                });
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Excluir usuário", description = "Exclui um usuário com base no ID fornecido.")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } catch (UserNotFoundException e) {
+            String errorMessage = e.getMessage();
+            LOGGER.error(errorMessage);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(errorMessage)); // Retorna a mensagem de erro
+        }
     }
 }

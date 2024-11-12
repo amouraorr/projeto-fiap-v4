@@ -1,5 +1,6 @@
 package com.alex.fiap.service;
 
+import com.alex.fiap.exception.UserNotFoundException;
 import com.alex.fiap.model.Customer;
 import com.alex.fiap.model.RestaurantOwner;
 import com.alex.fiap.model.User;
@@ -10,6 +11,7 @@ import com.alex.fiap.request.UserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -67,10 +69,13 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException("Usuário com ID " + id + " não encontrado.");
+        }
         userRepository.deleteById(id);
         LOGGER.info("Usuário com ID {} foi deletado", id);
     }
-    // Métodos de validação de login, busca e alteração de senha foram comentados
+
 
     public boolean validateLogin(String login, String senha) {
         Optional<User> optionalUser = userRepository.findByLogin(login);
@@ -102,17 +107,7 @@ public class UserService {
     public List<User> searchUsersByName(String nome) {
         return userRepository.findByNomeContaining(nome);
     }
-    /*
-        private void setUserType(User user) {
-            if (user instanceof Customer) {
-                user.setTipo("cliente");
-            } else if (user instanceof RestaurantOwner) {
-                user.setTipo("dono do restaurante");
-            } else {
-                throw new IllegalArgumentException("Tipo de usuário inválido");
-            }
-        }
-     */
+
     private void validateAddress(EnderecoRequest enderecoRequest) {
         if (enderecoRequest == null) {
             throw new IllegalArgumentException("Endereço não pode ser nulo");
