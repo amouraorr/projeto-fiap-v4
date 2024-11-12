@@ -5,11 +5,15 @@ import com.alex.fiap.model.RestaurantOwner;
 import com.alex.fiap.model.User;
 import com.alex.fiap.repository.UserRepository;
 import com.alex.fiap.model.Endereco;
+import com.alex.fiap.request.EnderecoRequest;
+import com.alex.fiap.request.UserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import jakarta.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,87 +26,64 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    //@Autowired
-    //private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public User createUser(User user) {
+    public User createUser(@Valid UserRequest userRequest) {
+        User user = new User();
+        //setUserType(user);
 
-        if (user instanceof Customer) {
-            user.setTipo("cliente");
-        } else if (user instanceof RestaurantOwner) {
-            user.setTipo("dono do restaurante");
-        }
+        // Valida o endereço usando EnderecoRequest
+        validateAddress(userRequest.getEndereco());
 
-        /*
-        if (user instanceof Customer) {
-            user.setTipo("customer");
-        } else if (user instanceof RestaurantOwner) {
-            user.setTipo("owner");
-        }
-        */
-        user.setNome(user.getNome());
-        user.setEmail(user.getEmail());
+        // Preenche os dados do usuário
+        user.setNome(userRequest.getNome());
+        user.setEmail(userRequest.getEmail());
+        user.setLogin(userRequest.getLogin());
+        user.setSenha(userRequest.getSenha());
+        user.setEndereco(convertToEndereco(userRequest.getEndereco())); // Converte EnderecoRequest para Endereco
+        user.setTipo(userRequest.getTipo()); // Define o tipo
 
-        // Acesse os campos do endereço
-
-        Endereco endereco = user.getEndereco();
-        String rua = endereco.getRua();
-        String cidade = endereco.getCidade();
-        String estado = endereco.getEstado();
-        String cep = endereco.getCep();
-
-        // Defina o endereço completo
-        user.setEndereco(endereco);
-
-        // Verifique se a senha não é nula antes de codificá-la
-        if (user.getSenha() != null) {
-            //user.setSenha(passwordEncoder.encode(user.getSenha()));
-        } else {
-            throw new IllegalArgumentException("Senha não pode ser nula");
-        }
+        // Codifica a senha
+        encodePassword(user);
 
         user.setData(new Date());
+        LOGGER.info("Criando usuário: {}", user.getNome());
 
         return userRepository.save(user);
-
     }
 
-
-    public Optional<User> updateUser(Long id, User updatedUser) {
-
+    public Optional<User> updateUser(Long id, UserRequest updatedUserRequest) {
         return userRepository.findById(id).map(user -> {
-            user.setNome(updatedUser.getNome());
-            user.setEmail(updatedUser.getEmail());
-            user.setEndereco(updatedUser.getEndereco());
-            user.setData(new Date());
-
+            user.setNome(updatedUserRequest.getNome());
+            user.setEmail(updatedUserRequest.getEmail());
+            user.setLogin(updatedUserRequest.getLogin());
+            user.setSenha(updatedUserRequest.getSenha());
+            user.setTipo(updatedUserRequest.getTipo());
+            // Atualizar o endereço, se necessário
+            user.setEndereco(convertToEndereco(updatedUserRequest.getEndereco()));
             return userRepository.save(user);
-
         });
     }
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+        LOGGER.info("Usuário com ID {} foi deletado", id);
     }
-
-
+    // Métodos de validação de login, busca e alteração de senha foram comentados
 
     public boolean validateLogin(String login, String senha) {
-
         Optional<User> optionalUser = userRepository.findByLogin(login);
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            //boolean matches = passwordEncoder.matches(senha, user.getSenha());
-            LOGGER.info("Senha fornecida: {}", senha);
-            LOGGER.info("Hash armazenado: {}", user.getSenha());
-            //LOGGER.info("Validação: {}", matches);
-            //return matches;
+            boolean matches = passwordEncoder.matches(senha, user.getSenha());
+            LOGGER.info("Validação de login para usuário: {}", login);
+            return matches;
         }
         return false;
     }
+     public Optional<User> getUserById(Long id) {
 
-    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -112,12 +93,58 @@ public class UserService {
 
     public Optional<User> changePassword(Long id, String newPassword) {
         return userRepository.findById(id).map(user -> {
-            //user.setSenha(passwordEncoder.encode(newPassword));
+            user.setSenha(passwordEncoder.encode(newPassword));
+            LOGGER.info("Senha alterada para o usuário: {}", user.getNome());
             return userRepository.save(user);
         });
     }
 
     public List<User> searchUsersByName(String nome) {
         return userRepository.findByNomeContaining(nome);
+    }
+    /*
+        private void setUserType(User user) {
+            if (user instanceof Customer) {
+                user.setTipo("cliente");
+            } else if (user instanceof RestaurantOwner) {
+                user.setTipo("dono do restaurante");
+            } else {
+                throw new IllegalArgumentException("Tipo de usuário inválido");
+            }
+        }
+     */
+    private void validateAddress(EnderecoRequest enderecoRequest) {
+        if (enderecoRequest == null) {
+            throw new IllegalArgumentException("Endereço não pode ser nulo");
+        }
+        if (enderecoRequest.getRua() == null || enderecoRequest.getRua().isEmpty()) {
+            throw new IllegalArgumentException("O nome da rua não pode ser nulo ou vazio");
+        }
+        if (enderecoRequest.getCidade() == null || enderecoRequest.getCidade().isEmpty()) {
+            throw new IllegalArgumentException("O nome da cidade não pode ser nulo ou vazio");
+        }
+        if (enderecoRequest.getEstado() == null || enderecoRequest.getEstado().isEmpty()) {
+            throw new IllegalArgumentException("O nome do estado não pode ser nulo ou vazio");
+        }
+        if (enderecoRequest.getCep() == null || enderecoRequest.getCep().isEmpty()) {
+            throw new IllegalArgumentException("O cep não pode ser nulo ou vazio");
+        }
+    }
+
+    private Endereco convertToEndereco(EnderecoRequest enderecoRequest) {
+        Endereco endereco = new Endereco();
+        endereco.setRua(enderecoRequest.getRua());
+        endereco.setCidade(enderecoRequest.getCidade());
+        endereco.setEstado(enderecoRequest.getEstado());
+        endereco.setCep(enderecoRequest.getCep());
+        return endereco;
+    }
+
+    private void encodePassword(User user) {
+        if (user.getSenha() != null) {
+            user.setSenha(passwordEncoder.encode(user.getSenha()));
+        } else {
+            throw new IllegalArgumentException("Senha não pode ser nula");
+        }
     }
 }

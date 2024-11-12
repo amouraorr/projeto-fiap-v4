@@ -1,34 +1,46 @@
 package com.alex.fiap.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Embedded;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Getter
 @Setter
 public class UserRequest {
 
-    @NotNull(message = "O nome não pode ser nulo")
+    @Schema(description = "Nome do usuário, deve ter entre 2 e 100 caracteres")
+    @NotBlank(message = "O nome não pode ser vazio ou apenas espaços")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
     private String nome;
 
-    @NotBlank(message = "O email não pode ser vazio")
+    @Schema(description = "Email do usuário, deve ser um email válido")
+    @NotBlank(message = "O email não pode ser vazio ou apenas espaços")
     @Email(message = "O email deve ser válido")
     private String email;
 
-    @NotNull(message = "O login não pode ser nulo")
+    @Schema(description = "Login do usuário, deve ter entre 3 e 20 caracteres")
+    @NotBlank(message = "O login não pode ser vazio ou apenas espaços")
     @Size(min = 3, max = 20, message = "O login deve ter entre 3 e 20 caracteres")
     private String login;
 
-    @NotNull(message = "A senha não pode ser nula")
+    @Schema(description = "Senha do usuário, deve ter pelo menos 6 caracteres")
+    @NotBlank(message = "A senha não pode ser vazia ou apenas espaços")
     @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres")
     private String senha;
 
+    @Embedded
     @Valid
+    @Schema(description = "Endereço do usuário")
     private EnderecoRequest endereco;
-}
 
+    @Schema(description = "Tipo de usuário, deve ser 'cliente' ou 'dono do restaurante'.",
+            example = "cliente", // Exemplo de valor que pode ser fornecido
+            required = true // Indica que este campo é obrigatório
+    )
+    @NotBlank(message = "O tipo não pode ser vazio ou apenas espaços")
+    @Pattern(regexp = "^(cliente|dono do restaurante)$", message = "O tipo deve ser 'cliente' ou 'dono do restaurante'")
+    private String tipo;
+}
