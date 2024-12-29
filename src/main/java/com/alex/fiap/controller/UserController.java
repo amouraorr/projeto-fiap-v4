@@ -2,9 +2,12 @@ package com.alex.fiap.controller;
 
 import com.alex.fiap.exception.UserNotFoundException;
 import com.alex.fiap.mapper.UserMapper;
+import com.alex.fiap.request.ChangePasswordRequest;
 import com.alex.fiap.model.User;
+import com.alex.fiap.request.LoginRequest;
+import com.alex.fiap.request.SearchUserRequestName;
 import com.alex.fiap.request.UserRequest;
-import com.alex.fiap.response.ApiResponse; // Importar ApiResponse
+import com.alex.fiap.response.ApiResponse;
 import com.alex.fiap.response.UserResponse;
 import com.alex.fiap.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/users")
@@ -49,10 +52,10 @@ public class UserController {
 
     @PostMapping("/login")
     @Operation(summary = "Login do usuário", description = "Valida as credenciais do usuário e retorna verdadeiro se forem válidas.")
-    public ResponseEntity<ApiResponse<Boolean>> login(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<ApiResponse<Boolean>> login(@Valid @RequestBody LoginRequest loginRequest) {
         try {
-            String login = credentials.get("login");
-            String senha = credentials.get("senha");
+            String login = loginRequest.getLogin();
+            String senha = loginRequest.getSenha();
             boolean isValid = userService.validateLogin(login, senha);
             return ResponseEntity.ok(new ApiResponse<>(isValid, null));
         } catch (Exception e) {
@@ -88,10 +91,10 @@ public class UserController {
 
     @PostMapping("/search")
     @Operation(summary = "Buscar usuários por nome", description = "Busca usuários cujo nome contém a sequência de caracteres fornecida.")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> searchUsersByName(@RequestBody Map<String, String> request) {
-        LOGGER.info("Recebendo requisição de busca com dados: {}", request);
+    public ResponseEntity<ApiResponse<List<UserResponse>>> searchUsersByName(@Valid @RequestBody SearchUserRequestName searchUserRequestName) {
+        LOGGER.info("Recebendo requisição de busca com dados: {}", searchUserRequestName);
 
-        String nome = request.get("nome");
+        String nome = searchUserRequestName.getNome();
         if (nome == null || nome.isEmpty()) {
             LOGGER.error("O parâmetro 'nome' está ausente ou vazio.");
             return ResponseEntity.badRequest().body(new ApiResponse<>(null, "O parâmetro 'nome' é obrigatório."));
@@ -124,8 +127,8 @@ public class UserController {
 
     @PatchMapping("/{id}/change-password")
     @Operation(summary = "Alterar senha", description = "Altera a senha de um usuário com base no ID fornecido.")
-    public ResponseEntity<ApiResponse<UserResponse>> changePassword(@PathVariable Long id, @RequestBody Map<String, String> passwordMap) {
-        String newPassword = passwordMap.get("newPassword");
+    public ResponseEntity<ApiResponse<UserResponse>> changePassword(@PathVariable Long id, @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        String newPassword = changePasswordRequest.getNewPassword();
 
         return userService.changePassword(id, newPassword)
                 .map(user -> ResponseEntity.ok(new ApiResponse<>(userMapper.toDto(user), null)))
