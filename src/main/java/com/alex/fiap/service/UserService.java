@@ -1,8 +1,6 @@
 package com.alex.fiap.service;
 
 import com.alex.fiap.exception.UserNotFoundException;
-import com.alex.fiap.model.Customer;
-import com.alex.fiap.model.RestaurantOwner;
 import com.alex.fiap.model.User;
 import com.alex.fiap.repository.UserRepository;
 import com.alex.fiap.model.Endereco;
@@ -11,7 +9,6 @@ import com.alex.fiap.request.UserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,13 +57,21 @@ public class UserService {
             user.setNome(updatedUserRequest.getNome());
             user.setEmail(updatedUserRequest.getEmail());
             user.setLogin(updatedUserRequest.getLogin());
-            user.setSenha(updatedUserRequest.getSenha());
+
+            // Criptografa a senha antes de atualizar, se ela for fornecida
+            if (updatedUserRequest.getSenha() != null && !updatedUserRequest.getSenha().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(updatedUserRequest.getSenha());
+                user.setSenha(encodedPassword);
+            }
+
             user.setTipo(updatedUserRequest.getTipo());
             // Atualizar o endereço, se necessário
             user.setEndereco(convertToEndereco(updatedUserRequest.getEndereco()));
+
             return userRepository.save(user);
         });
     }
+
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
@@ -87,6 +92,7 @@ public class UserService {
         }
         return false;
     }
+
      public Optional<User> getUserById(Long id) {
 
         return userRepository.findById(id);

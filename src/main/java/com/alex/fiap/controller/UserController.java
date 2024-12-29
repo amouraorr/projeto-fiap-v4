@@ -32,13 +32,34 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    @PostMapping
+    @Operation(summary = "Criação de usuário", description = "Cria um novo usuário com os dados fornecidos.")
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
+        LOGGER.info("Iniciando criação de usuário...");
+        LOGGER.info("Recebendo requisição para criar usuário: {}", userRequest);
+
+        User user = userMapper.toEntity(userRequest); // Converter DTO para Entidade
+        User createdUser = userService.createUser(userRequest);
+
+        UserResponse userResponse = userMapper.toDto(createdUser); // Converter Entidade para DTO
+        return ResponseEntity.ok(userResponse);
+
+    }
+
     @PostMapping("/login")
     @Operation(summary = "Login do usuário", description = "Valida as credenciais do usuário e retorna verdadeiro se forem válidas.")
     public ResponseEntity<ApiResponse<Boolean>> login(@RequestBody Map<String, String> credentials) {
-        String login = credentials.get("login");
-        String senha = credentials.get("senha");
-        boolean isValid = userService.validateLogin(login, senha);
-        return ResponseEntity.ok(new ApiResponse<>(isValid, null));
+        try {
+            String login = credentials.get("login");
+            String senha = credentials.get("senha");
+            boolean isValid = userService.validateLogin(login, senha);
+            return ResponseEntity.ok(new ApiResponse<>(isValid, null));
+        } catch (Exception e) {
+            LOGGER.error("Error ao tentar fazer login: ", e);
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Error interno no servidor"));
+        }
     }
 
     @GetMapping("/{id}")
@@ -89,12 +110,15 @@ public class UserController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar usuário", description = "Atualiza os dados de um usuário existente com base no ID fornecido.")
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
-        return userService.updateUser(id, userRequest) // Passa diretamente o UserRequest
-                .map(updatedUser -> ResponseEntity.ok(new ApiResponse<>(userMapper.toDto(updatedUser), null)))
+        return userService.updateUser(id, userRequest)
+                .map(updatedUser -> {
+                    LOGGER.info("Usuário com ID {} atualizado com sucesso.", id);
+                    return ResponseEntity.ok(new ApiResponse<>(userMapper.toDto(updatedUser), null));
+                })
                 .orElseGet(() -> {
                     String errorMessage = String.format("Usuário com ID %d não encontrado.", id);
-                    LOGGER.error(errorMessage); // Log da mensagem de erro
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(errorMessage)); // Retorna a mensagem de erro
+                    LOGGER.error(errorMessage);
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(errorMessage));
                 });
     }
 
