@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EnderecoRequest {
+public class AddressRequest {
 
     @Schema(description = "Nome da rua do endereço", example = "Nome da rua")
     @NotBlank(message = "O nome da rua não pode ser vazio ou apenas espaços")

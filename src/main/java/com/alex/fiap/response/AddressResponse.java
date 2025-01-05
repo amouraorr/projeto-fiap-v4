@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EnderecoResponse {
+public class AddressResponse {
 
     @Schema(description = "Nome da rua do endereço.")
     private String rua;

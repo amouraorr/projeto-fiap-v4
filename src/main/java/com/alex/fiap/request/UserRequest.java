@@ -34,7 +34,7 @@ public class UserRequest {
     @Embedded
     @Valid
     @Schema(description = "Endereço do usuário")
-    private EnderecoRequest endereco;
+    private AddressRequest endereco;
 
     @Schema(description = "Tipo de usuário, deve ser 'cliente' ou 'dono do restaurante'.",
             example = "Tipo de usuário, deve ser 'cliente' ou 'dono do restaurante", // Exemplo de valor que pode ser fornecido

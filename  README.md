@@ -326,7 +326,7 @@ e o banco de dados PostgreSQL estará rodando em localhost:5432.
    "email": "usuario@example.com",
    "login": "usuario_exemplo",
    "senha": "senha_exemplo",
-   "endereco": {
+   "address": {
    "rua": "Rua Exemplo",
    "cidade": "Cidade Exemplo",
    "estado": "Estado Exemplo",
@@ -342,7 +342,7 @@ e o banco de dados PostgreSQL estará rodando em localhost:5432.
    "nome": "Nome do Usuário",
    "email": "usuario@example.com",
    "login": "usuario_exemplo",
-   "endereco": {
+   "address": {
    "rua": "Rua Exemplo",
    "cidade": "Cidade Exemplo",
    "estado": "Estado Exemplo",
@@ -359,7 +359,7 @@ e o banco de dados PostgreSQL estará rodando em localhost:5432.
    "email": "novo_email@example.com",
    "login": "novo_login",
    "senha": "nova_senha",
-   "endereco": {
+   "address": {
    "rua": "Nova Rua",
    "cidade": "Nova Cidade",
    "estado": "Novo Estado",
@@ -423,7 +423,7 @@ curl -X POST http://localhost:8080/users \
   "email": "usuario@example.com",
   "login": "usuario_exemplo",
   "senha": "senha_exemplo",
-  "endereco": {
+  "address": {
     "rua": "Rua Exemplo",
     "cidade": "Cidade Exemplo",
     "estado": "Estado Exemplo",
@@ -447,7 +447,7 @@ curl -X PUT http://localhost:8080/users/1 \
   "email": "novo_email@example.com",
   "login": "novo_login",
   "senha": "nova_senha",
-  "endereco": {
+  "address": {
     "rua": "Nova Rua",
     "cidade": "Nova Cidade",
     "estado": "Novo Estado",

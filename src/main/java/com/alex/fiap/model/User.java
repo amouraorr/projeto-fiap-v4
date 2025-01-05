@@ -33,7 +33,7 @@ public class User {
     @Embedded
     @Valid
     @Schema(description = "Endereço do usuário")
-    private Endereco endereco;
+    private Address address;
 
     @Schema(description = "Tipo do usuário, deve ser 'cliente' ou 'dono do restaurante'")
     private String tipo;

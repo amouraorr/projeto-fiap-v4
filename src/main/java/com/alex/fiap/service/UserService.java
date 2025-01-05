@@ -3,8 +3,8 @@ package com.alex.fiap.service;
 import com.alex.fiap.exception.UserNotFoundException;
 import com.alex.fiap.model.User;
 import com.alex.fiap.repository.UserRepository;
-import com.alex.fiap.model.Endereco;
-import com.alex.fiap.request.EnderecoRequest;
+import com.alex.fiap.model.Address;
+import com.alex.fiap.request.AddressRequest;
 import com.alex.fiap.request.UserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public class UserService {
         user.setEmail(userRequest.getEmail());
         user.setLogin(userRequest.getLogin());
         user.setSenha(userRequest.getSenha());
-        user.setEndereco(convertToEndereco(userRequest.getEndereco())); // Converte EnderecoRequest para Endereco
+        user.setAddress(convertToEndereco(userRequest.getEndereco())); // Converte EnderecoRequest para Endereco
         user.setTipo(userRequest.getTipo()); // Define o tipo
 
         // Codifica a senha
@@ -66,7 +66,7 @@ public class UserService {
 
             user.setTipo(updatedUserRequest.getTipo());
             // Atualizar o endereço, se necessário
-            user.setEndereco(convertToEndereco(updatedUserRequest.getEndereco()));
+            user.setAddress(convertToEndereco(updatedUserRequest.getEndereco()));
 
             return userRepository.save(user);
         });
@@ -114,31 +114,31 @@ public class UserService {
         return userRepository.findByNomeContaining(nome);
     }
 
-    private void validateAddress(EnderecoRequest enderecoRequest) {
-        if (enderecoRequest == null) {
+    private void validateAddress(AddressRequest addressRequest) {
+        if (addressRequest == null) {
             throw new IllegalArgumentException("Endereço não pode ser nulo");
         }
-        if (enderecoRequest.getRua() == null || enderecoRequest.getRua().isEmpty()) {
+        if (addressRequest.getRua() == null || addressRequest.getRua().isEmpty()) {
             throw new IllegalArgumentException("O nome da rua não pode ser nulo ou vazio");
         }
-        if (enderecoRequest.getCidade() == null || enderecoRequest.getCidade().isEmpty()) {
+        if (addressRequest.getCidade() == null || addressRequest.getCidade().isEmpty()) {
             throw new IllegalArgumentException("O nome da cidade não pode ser nulo ou vazio");
         }
-        if (enderecoRequest.getEstado() == null || enderecoRequest.getEstado().isEmpty()) {
+        if (addressRequest.getEstado() == null || addressRequest.getEstado().isEmpty()) {
             throw new IllegalArgumentException("O nome do estado não pode ser nulo ou vazio");
         }
-        if (enderecoRequest.getCep() == null || enderecoRequest.getCep().isEmpty()) {
+        if (addressRequest.getCep() == null || addressRequest.getCep().isEmpty()) {
             throw new IllegalArgumentException("O cep não pode ser nulo ou vazio");
         }
     }
 
-    private Endereco convertToEndereco(EnderecoRequest enderecoRequest) {
-        Endereco endereco = new Endereco();
-        endereco.setRua(enderecoRequest.getRua());
-        endereco.setCidade(enderecoRequest.getCidade());
-        endereco.setEstado(enderecoRequest.getEstado());
-        endereco.setCep(enderecoRequest.getCep());
-        return endereco;
+    private Address convertToEndereco(AddressRequest addressRequest) {
+        Address address = new Address();
+        address.setRua(addressRequest.getRua());
+        address.setCidade(addressRequest.getCidade());
+        address.setEstado(addressRequest.getEstado());
+        address.setCep(addressRequest.getCep());
+        return address;
     }
 
     private void encodePassword(User user) {

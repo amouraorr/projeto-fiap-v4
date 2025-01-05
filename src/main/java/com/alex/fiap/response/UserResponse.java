@@ -21,5 +21,5 @@ public class UserResponse {
     private String tipo;
 
     @Schema(description = "Informações de endereço do usuário.")
-    private EnderecoResponse endereco;
+    private AddressResponse endereco;
 }

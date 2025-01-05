@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 @Data
-public class Endereco {
+public class Address {
 
     @Column(name = "endereco_rua")
     private String rua;
