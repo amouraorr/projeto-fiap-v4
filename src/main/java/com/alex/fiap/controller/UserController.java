@@ -72,7 +72,7 @@ public class UserController {
                 .map(user -> {
                     UserResponse userResponse = userMapper.toDto(user);
                     LOGGER.info("Usuário encontrado: {}", userResponse); // Log quando o usuário é encontrado
-                    return ResponseEntity.ok(new ApiResponse<>(userResponse)); // Retorna apenas data
+                    return ResponseEntity.ok(new ApiResponse<>(userResponse)); // Retorna apenas data.sql
                 })
                 .orElseGet(() -> {
                     String errorMessage = String.format("Usuário com ID %d não encontrado.", id);

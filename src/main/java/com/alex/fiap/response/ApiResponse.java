@@ -38,7 +38,7 @@ public class ApiResponse<T> {
     @Override
     public String toString() {
         return "ApiResponse{" +
-                "data=" + data +
+                "data.sql=" + data +
                 ", error='" + error + '\'' +
                 '}';
     }
