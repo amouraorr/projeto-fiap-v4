@@ -1,0 +1,1050 @@
+{
+	"info": {
+		"_postman_id": "c65539c3-a40e-4857-8966-f34310bbff3a",
+		"name": "PÓS GRADUAÇÃO - FIAP 2025",
+		"description": "Desenvolver um backend completo e robusto utilizando o framework\nSpring Boot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39987953"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Criação de login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"andyNap2\",\n  \"senha\": \"senhaforte\",\n  \"tipo\": \"CLIENTE\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Cria um novo login com os dados fornecidos."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"<string>\",\n  \"senha\": \"<string>\",\n  \"tipo\": \"PROPRIETARIO\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<long>\",\n  \"login\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Realizar login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/login/:login?password=SuaSenhaSegura",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login",
+								":login"
+							],
+							"query": [
+								{
+									"key": "password",
+									"value": "SuaSenhaSegura",
+									"description": "(Required) "
+								}
+							],
+							"variable": [
+								{
+									"key": "login",
+									"value": "andyNap",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Exclui um usuário com base no ID fornecido."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/login/:login?password=SuaSenhaSegura",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"login",
+										":login"
+									],
+									"query": [
+										{
+											"key": "password",
+											"value": "SuaSenhaSegura",
+											"description": "(Required) "
+										}
+									],
+									"variable": [
+										{
+											"key": "login",
+											"value": "andyNap",
+											"description": "(Required) "
+										}
+									]
+								},
+								"description": "Exclui um usuário com base no ID fornecido."
+							},
+							"_postman_previewlanguage": "",
+							"header": "",
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Alterar senha",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"newPassword\": \"SuaSenhaSegura\",\n  \"currentPassword\": \"SuaSenhaSegura\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Altera a senha de um usuário com base no ID fornecido."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"newPassword\": \"SuaSenhaSegura\",\n  \"currentPassword\": \"SuaSenhaSegura\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/login/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"login",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Altera a senha de um usuário com base no ID fornecido."
+							},
+							"_postman_previewlanguage": "",
+							"header": "",
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Buscar por filtro",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "ce",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "teste@teste.com",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Busca usuários cujo nome contém a sequência de caracteres fornecida."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users?nome=<string>&email=<string>&tipo=CLIENTE",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "<string>"
+										},
+										{
+											"key": "email",
+											"value": "<string>"
+										},
+										{
+											"key": "tipo",
+											"value": "CLIENTE"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"id\": \"<long>\",\n      \"nome\": \"<string>\",\n      \"email\": \"<string>\",\n      \"tipo\": \"<string>\",\n      \"endereco\": {\n        \"id\": \"<long>\",\n        \"rua\": \"<string>\",\n        \"bairro\": \"<string>\",\n        \"numero\": \"<string>\",\n        \"complemento\": \"<string>\",\n        \"pontoDeReferencia\": \"<string>\",\n        \"cidade\": \"<string>\",\n        \"estado\": \"<string>\",\n        \"cep\": \"<string>\",\n        \"criadoEm\": \"<dateTime>\",\n        \"atualizadoEm\": \"<dateTime>\",\n        \"usuario\": {\n          \"nome\": \"<string>\",\n          \"email\": \"<string>\"\n        }\n      }\n    },\n    {\n      \"id\": \"<long>\",\n      \"nome\": \"<string>\",\n      \"email\": \"<string>\",\n      \"tipo\": \"<string>\",\n      \"endereco\": {\n        \"id\": \"<long>\",\n        \"rua\": \"<string>\",\n        \"bairro\": \"<string>\",\n        \"numero\": \"<string>\",\n        \"complemento\": \"<string>\",\n        \"pontoDeReferencia\": \"<string>\",\n        \"cidade\": \"<string>\",\n        \"estado\": \"<string>\",\n        \"cep\": \"<string>\",\n        \"criadoEm\": \"<dateTime>\",\n        \"atualizadoEm\": \"<dateTime>\",\n        \"usuario\": {\n          \"nome\": \"<string>\",\n          \"email\": \"<string>\"\n        }\n      }\n    }\n  ],\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Criação de usuário",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"teste@marcelo.com\",\n  \"nome\": \"Marcelo Silva\",\n  \"idLogin\": 1\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Cria um novo usuário com os dados fornecidos."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"nome\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<long>\",\n  \"nome\": \"<string>\",\n  \"email\": \"<string>\",\n  \"tipo\": \"<string>\",\n  \"endereco\": {\n    \"id\": \"<long>\",\n    \"rua\": \"<string>\",\n    \"bairro\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"complemento\": \"<string>\",\n    \"pontoDeReferencia\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"criadoEm\": \"<dateTime>\",\n    \"atualizadoEm\": \"<dateTime>\",\n    \"usuario\": {\n      \"nome\": \"<string>\",\n      \"email\": \"<string>\"\n    }\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Busca usuário por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Retorna um cliente ou dono do restaurante com base no ID fornecido."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<long>\",\n  \"nome\": \"<string>\",\n  \"email\": \"<string>\",\n  \"tipo\": \"<string>\",\n  \"endereco\": {\n    \"id\": \"<long>\",\n    \"rua\": \"<string>\",\n    \"bairro\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"complemento\": \"<string>\",\n    \"pontoDeReferencia\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"criadoEm\": \"<dateTime>\",\n    \"atualizadoEm\": \"<dateTime>\",\n    \"usuario\": {\n      \"nome\": \"<string>\",\n      \"email\": \"<string>\"\n    }\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Atualizar usuário",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"marcelo@gmail.copm\",\n  \"nome\": \"Marcelo Silva dos Anjos\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Atualiza os dados de um usuário existente com base no ID fornecido."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"nome\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {\n    \"id\": \"<long>\",\n    \"nome\": \"<string>\",\n    \"email\": \"<string>\",\n    \"tipo\": \"<string>\",\n    \"endereco\": {\n      \"id\": \"<long>\",\n      \"rua\": \"<string>\",\n      \"bairro\": \"<string>\",\n      \"numero\": \"<string>\",\n      \"complemento\": \"<string>\",\n      \"pontoDeReferencia\": \"<string>\",\n      \"cidade\": \"<string>\",\n      \"estado\": \"<string>\",\n      \"cep\": \"<string>\",\n      \"criadoEm\": \"<dateTime>\",\n      \"atualizadoEm\": \"<dateTime>\",\n      \"usuario\": {\n        \"nome\": \"<string>\",\n        \"email\": \"<string>\"\n      }\n    }\n  },\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Excluir usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Exclui um usuário com base no ID fornecido."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {},\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Enderecos",
+			"item": [
+				{
+					"name": "Listar todos os endereços",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/address",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"address"
+							]
+						},
+						"description": "Retorna uma lista de todos os endereços cadastrados."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/address",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"address"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"id\": \"<long>\",\n      \"rua\": \"<string>\",\n      \"bairro\": \"<string>\",\n      \"numero\": \"<string>\",\n      \"complemento\": \"<string>\",\n      \"pontoDeReferencia\": \"<string>\",\n      \"cidade\": \"<string>\",\n      \"estado\": \"<string>\",\n      \"cep\": \"<string>\",\n      \"criadoEm\": \"<dateTime>\",\n      \"atualizadoEm\": \"<dateTime>\",\n      \"usuario\": {\n        \"nome\": \"<string>\",\n        \"email\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<long>\",\n      \"rua\": \"<string>\",\n      \"bairro\": \"<string>\",\n      \"numero\": \"<string>\",\n      \"complemento\": \"<string>\",\n      \"pontoDeReferencia\": \"<string>\",\n      \"cidade\": \"<string>\",\n      \"estado\": \"<string>\",\n      \"cep\": \"<string>\",\n      \"criadoEm\": \"<dateTime>\",\n      \"atualizadoEm\": \"<dateTime>\",\n      \"usuario\": {\n        \"nome\": \"<string>\",\n        \"email\": \"<string>\"\n      }\n    }\n  ],\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Criação de endereço",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bairro\": \"vila \",\n  \"cep\": \"94294191\",\n  \"cidade\": \"sao paulo\",\n  \"estado\": \"SP\",\n  \"idUsuario\": \"1\",\n  \"rua\": \"rua A\",\n  \"numero\": \"4\",\n  \"complemento\": \"complemento\",\n  \"pontoDeReferencia\": \"ponto de referencia\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/address",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"address"
+							]
+						},
+						"description": "Cria um novo endereço com os dados fornecidos."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"94294191\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"vA\",\n  \"idUsuario\": \"<long>\",\n  \"rua\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"complemento\": \"<string>\",\n  \"pontoDeReferencia\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/address",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"address"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<long>\",\n  \"rua\": \"<string>\",\n  \"bairro\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"complemento\": \"<string>\",\n  \"pontoDeReferencia\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"criadoEm\": \"<dateTime>\",\n  \"atualizadoEm\": \"<dateTime>\",\n  \"usuario\": {\n    \"nome\": \"<string>\",\n    \"email\": \"<string>\"\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Busca endereço por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/address/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"address",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "<long>",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Retorna um endereço com base no ID fornecido."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/address/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"address",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<long>\",\n  \"rua\": \"<string>\",\n  \"bairro\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"complemento\": \"<string>\",\n  \"pontoDeReferencia\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"criadoEm\": \"<dateTime>\",\n  \"atualizadoEm\": \"<dateTime>\",\n  \"usuario\": {\n    \"nome\": \"<string>\",\n    \"email\": \"<string>\"\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Atualizar endereço",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bairro\": \"novo\",\n  \"cep\": \"94294191\",\n  \"cidade\": \"novo\",\n  \"estado\": \"vA\",\n  \"idUsuario\": \"1\",\n  \"rua\": \"novo\",\n  \"numero\": \"novo\",\n  \"complemento\": \"novo\",\n  \"pontoDeReferencia\": \"novo\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/address/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"address",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Atualiza os dados de um endereço existente com base no ID fornecido."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"94294191\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"vA\",\n  \"idUsuario\": \"<long>\",\n  \"rua\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"complemento\": \"<string>\",\n  \"pontoDeReferencia\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/address/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"address",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {\n    \"id\": \"<long>\",\n    \"rua\": \"<string>\",\n    \"bairro\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"complemento\": \"<string>\",\n    \"pontoDeReferencia\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"criadoEm\": \"<dateTime>\",\n    \"atualizadoEm\": \"<dateTime>\",\n    \"usuario\": {\n      \"nome\": \"<string>\",\n      \"email\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Excluir endereço",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/address/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"address",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Exclui um endereço com base no ID fornecido."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/address/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"address",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {},\n  \"error\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		}
+	]
+}

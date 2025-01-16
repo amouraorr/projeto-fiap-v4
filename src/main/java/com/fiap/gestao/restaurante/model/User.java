@@ -33,10 +33,10 @@ public class User {
     @Column(name = "atualizado_em", nullable = false)
     private LocalDateTime atualizadoEm;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Address> enderecos;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_login", nullable = false)
     private Login login;
 }

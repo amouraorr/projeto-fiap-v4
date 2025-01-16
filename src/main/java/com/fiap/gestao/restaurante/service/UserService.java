@@ -1,10 +1,11 @@
 package com.fiap.gestao.restaurante.service;
 
+import com.fiap.gestao.restaurante.dto.request.UpdateUserRequest;
 import com.fiap.gestao.restaurante.dto.request.UserRequest;
 import com.fiap.gestao.restaurante.dto.response.UserResponse;
-import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
 import com.fiap.gestao.restaurante.mapper.UserMapper;
+import com.fiap.gestao.restaurante.repository.LoginRepository;
 import com.fiap.gestao.restaurante.repository.UserRepository;
 import com.fiap.gestao.restaurante.specifications.UserSpecification;
 import jakarta.validation.Valid;
@@ -24,17 +25,26 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private LoginRepository loginRepository;
+
 
     @Autowired
     private UserMapper userMapper;
 
     public UserResponse createUser(@Valid UserRequest userRequest) {
         LOGGER.info("Criando usuário: {}", userRequest.getNome());
+        var loginOptional = loginRepository.findById(userRequest.getIdLogin());
+        var login = loginOptional.orElseThrow(
+                () -> new SmartRestaurantException("Login não cadastrado. Login é obrigatório para cadastro de usuário, por favor crie primeiro um login",
+                        HttpStatus.BAD_REQUEST)
+        );
         var user = userMapper.toModel(userRequest);
+        user.setLogin(login);
         return userMapper.toResponse(userRepository.save(user));
     }
 
-    public UserResponse updateUser(Long id, UserRequest updatedUserRequest) {
+    public UserResponse updateUser(Long id, UpdateUserRequest updatedUserRequest) {
         var userOptional = userRepository.findById(id);
         var user = userOptional.orElseThrow(
                 () -> new SmartRestaurantException(
@@ -67,8 +77,8 @@ public class UserService {
         return userMapper.toResponses(userRepository.findAll());
     }
 
-    public List<UserResponse> search(String nome, String email, UserTypeEnum tipo) {
-        var spec = UserSpecification.filtros(nome, email, tipo);
+    public List<UserResponse> search(String nome, String email) {
+        var spec = UserSpecification.filtros(nome, email);
         return userMapper.toResponses(userRepository.findAll(spec));
     }
 

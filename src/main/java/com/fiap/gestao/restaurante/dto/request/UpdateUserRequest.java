@@ -3,14 +3,13 @@ package com.fiap.gestao.restaurante.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRequest {
+public class UpdateUserRequest {
 
     @Schema(description = "Nome do usuário, deve ter entre 2 e 100 caracteres", example = "Seu nome completo")
     @NotBlank(message = "O nome não pode ser vazio ou apenas espaços")
@@ -22,7 +21,4 @@ public class UserRequest {
     @Email(message = "O email deve ser válido")
     private String email;
 
-    @Schema(description = "ID do login, deve ser válido", example = "login")
-    @NotNull(message = "O ID do login é obrigatório")
-    private Long idLogin;
 }

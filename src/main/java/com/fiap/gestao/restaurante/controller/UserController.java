@@ -1,9 +1,9 @@
 package com.fiap.gestao.restaurante.controller;
 
+import com.fiap.gestao.restaurante.dto.request.UpdateUserRequest;
 import com.fiap.gestao.restaurante.dto.request.UserRequest;
 import com.fiap.gestao.restaurante.dto.response.ApiResponse;
 import com.fiap.gestao.restaurante.dto.response.UserResponse;
-import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
 import com.fiap.gestao.restaurante.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,13 +47,12 @@ public class UserController {
     }
 
     @GetMapping
-    @Operation(summary = "Buscar usuários por nome", description = "Busca usuários cujo nome contém a sequência de caracteres fornecida.")
+    @Operation(summary = "Buscar usuários por filtro", description = "Busca usuários pro filtro de campos.")
     public ResponseEntity<ApiResponse<List<UserResponse>>> searchFilter(@RequestParam(required = false) String nome,
-                                                                        @RequestParam(required = false) String email,
-                                                                        @RequestParam(required = false) UserTypeEnum tipo) {
+                                                                        @RequestParam(required = false) String email) {
         LOGGER.info("Iniciando pesquisa de usuário por filtro...");
 
-        var users = userService.search(nome, email, tipo);
+        var users = userService.search(nome, email);
 
         LOGGER.info("Número de usuários encontrados: {}", users.size());
         if (users.isEmpty()) {
@@ -65,9 +64,9 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar usuário", description = "Atualiza os dados de um usuário existente com base no ID fornecido.")
-    public ResponseEntity<ApiResponse<UserResponse>> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<ApiResponse<UserResponse>> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         LOGGER.info("Iniciando atualizacao de usuário...");
-        var updated = userService.updateUser(id, userRequest);
+        var updated = userService.updateUser(id, updateUserRequest);
         return ResponseEntity.ok(new ApiResponse<>(updated, null));
     }
 

@@ -36,12 +36,12 @@ public class LoginController {
     @PatchMapping("/{id}")
     @Operation(summary = "Alterar senha", description = "Altera a senha de um usuário com base no ID fornecido.")
     public ResponseEntity<ApiResponse<LoginResponse>> changePassword(@PathVariable Long id, @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
-        var updated = loginService.changePassword(id, changePasswordRequest.getNewPassword());
+        var updated = loginService.changePassword(id, changePasswordRequest);
         return ResponseEntity.ok(new ApiResponse<>(updated, null));
     }
 
     @PostMapping("/{login}")
-    @Operation(summary = "Excluir usuário", description = "Exclui um usuário com base no ID fornecido.")
+    @Operation(summary = "Realizar login", description = "Realiza login com senha.")
     public ResponseEntity<Boolean> login(@PathVariable String login, @Valid @RequestParam String password) {
         var authenticated = loginService.authenticate(login, password);
         return ResponseEntity.ok(authenticated);

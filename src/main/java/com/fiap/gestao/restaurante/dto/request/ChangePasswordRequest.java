@@ -12,4 +12,8 @@ public class ChangePasswordRequest {
     @Schema(description = "Nova senha do usuário", example = "SuaSenhaSegura")
     @NotBlank(message = "A nova senha não pode ser vazia ou apenas espaços")
     private String newPassword;
+
+    @Schema(description = "Senha Atual do usuário", example = "SuaSenhaSegura")
+    @NotBlank(message = "A senha atual não pode ser vazia ou apenas espaços")
+    private String currentPassword;
 }

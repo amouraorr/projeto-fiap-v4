@@ -1,5 +1,6 @@
 package com.fiap.gestao.restaurante.service;
 
+import com.fiap.gestao.restaurante.dto.request.ChangePasswordRequest;
 import com.fiap.gestao.restaurante.dto.request.LoginRequest;
 import com.fiap.gestao.restaurante.dto.response.LoginResponse;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
@@ -34,12 +35,15 @@ public class LoginService {
         return mapper.toResponse(loginRepository.save(login));
     }
 
-    public LoginResponse changePassword(Long id, String newPassword) {
+    public LoginResponse changePassword(Long id, ChangePasswordRequest changePasswordRequest) {
         var loginOptional = loginRepository.findById(id);
         var login = loginOptional.orElseThrow(
                 () -> new SmartRestaurantException("Login nao encontrado", HttpStatus.BAD_REQUEST)
         );
-        login.setSenha(encodePassword(newPassword));
+        if(!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), login.getSenha())){
+            throw new SmartRestaurantException("Senha atual incorrecta", HttpStatus.BAD_REQUEST);
+        }
+        login.setSenha(encodePassword(changePasswordRequest.getNewPassword()));
         return mapper.toResponse(loginRepository.save(login));
     }
 
@@ -52,7 +56,9 @@ public class LoginService {
     }
 
     public boolean authenticate(String login, String password) {
-        var loginOptional = loginRepository.findByLoginAndSenha(login, encodePassword(password));
-        return loginOptional.isPresent();
+        var found = loginRepository.findByLogin(login)
+                .orElseThrow(() -> new SmartRestaurantException("Login não encontrado", HttpStatus.BAD_REQUEST));
+
+        return passwordEncoder.matches(password, found.getSenha());
     }
 }
