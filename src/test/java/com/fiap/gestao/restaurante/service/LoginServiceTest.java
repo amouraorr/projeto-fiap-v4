@@ -120,7 +120,7 @@ class LoginServiceTest {
         login.setSenha("encodedOldPassword");
 
         when(loginRepository.findById(userId)).thenReturn(Optional.of(login));
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false); // Simula senha atual incorreta
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
         SmartRestaurantException exception = assertThrows(SmartRestaurantException.class, () -> {
             loginService.changePassword(userId, changePasswordRequest);
@@ -135,6 +135,17 @@ class LoginServiceTest {
     void shouldThrowExceptionWhenPasswordIsNullOrBlank() {
         SmartRestaurantException exception = assertThrows(SmartRestaurantException.class, () -> {
             loginService.encodePassword(null);
+        });
+
+        assertEquals("Senha não pode ser nula", exception.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando a senha for vazia")
+    void shouldThrowExceptionWhenPasswordIsEmpty() {
+        SmartRestaurantException exception = assertThrows(SmartRestaurantException.class, () -> {
+            loginService.encodePassword("");
         });
 
         assertEquals("Senha não pode ser nula", exception.getMessage());
@@ -158,5 +169,21 @@ class LoginServiceTest {
 
         assertTrue(isAuthenticated);
         verify(loginRepository).findByLogin(login);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando o login não é encontrado durante a autenticação")
+    void shouldThrowExceptionWhenLoginNotFoundDuringAuthentication() {
+        String login = "user";
+        String password = "password";
+
+        when(loginRepository.findByLogin(login)).thenReturn(Optional.empty()); // Simula login não encontrado
+
+        SmartRestaurantException exception = assertThrows(SmartRestaurantException.class, () -> {
+            loginService.authenticate(login, password);
+        });
+
+        assertEquals("Login não encontrado", exception.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 }

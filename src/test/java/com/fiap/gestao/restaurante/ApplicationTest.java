@@ -8,8 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ApplicationTest {
 
     @Test
-    @DisplayName("Deve carregar o contexto da aplicação corretamente")
-    void shouldLoadApplicationContext() {
-        assert true;
+    @DisplayName("Deve executar o método main da aplicação")
+    void shouldExecuteMainMethod() {
+        Application.main(new String[] {});
     }
 }

@@ -46,37 +46,45 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    @DisplayName("Deve lidar com exceções gerais")
-    void shouldHandleGeneralException() {
+    @DisplayName("Deve lidar com exceções gerais com mensagem")
+    void shouldHandleGeneralExceptionWithMessage() {
         Throwable throwable = new RuntimeException("Erro inesperado");
 
         ResponseEntity<ApiResponse<Void>> response = globalExceptionHandler.handleGeneralException(throwable);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("Erro inesperado", response.getBody().getError());     }
+        assertEquals("Erro inesperado", response.getBody().getError());
+    }
+
+    @Test
+    @DisplayName("Deve lidar com exceções gerais sem mensagem")
+    void shouldHandleGeneralExceptionWithoutMessage() {
+        Throwable throwable = new RuntimeException();
+
+        ResponseEntity<ApiResponse<Void>> response = globalExceptionHandler.handleGeneralException(throwable);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Erro interno!", response.getBody().getError());
+    }
 
     @Test
     @DisplayName("Deve lidar com MethodArgumentNotValidException")
     void shouldHandleMethodArgumentNotValidException() {
-        // Simula o BindingResult com um erro de campo
         BindingResult bindingResult = mock(BindingResult.class);
         FieldError fieldError = new FieldError("objectName", "field", "defaultMessage");
         when(bindingResult.getFieldErrors()).thenReturn(Collections.singletonList(fieldError));
 
-        // Cria um MethodParameter real a partir de um método existente
         MethodParameter methodParameter = new MethodParameter(
-                this.getClass().getDeclaredMethods()[0], // Pega o primeiro método declarado na classe
-                -1 // Índice do parâmetro, -1 se não for relevante
+                this.getClass().getDeclaredMethods()[0],
+                -1
         );
 
-        // Cria a exceção simulada com um MethodParameter válido
         MethodArgumentNotValidException exception = new MethodArgumentNotValidException(methodParameter, bindingResult);
 
-        // Chama o método de tratamento
         ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleValidationExceptions(exception);
 
-        // Verifica o status e o corpo da resposta
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("defaultMessage", response.getBody().get("field"));
