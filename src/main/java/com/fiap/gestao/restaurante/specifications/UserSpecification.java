@@ -19,7 +19,8 @@ public class UserSpecification {
                 predicates.add(builder.equal(root.get("email"), email));
             }
 
-            return builder.and(predicates.toArray(new Predicate[0]));
+            // Retorna um predicado "sempre verdadeiro" se não houver filtros
+            return predicates.isEmpty() ? builder.conjunction() : builder.and(predicates.toArray(new Predicate[0]));
         };
     }
 }
