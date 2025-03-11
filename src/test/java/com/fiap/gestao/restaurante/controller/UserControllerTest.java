@@ -4,6 +4,7 @@ import com.fiap.gestao.restaurante.dto.request.UpdateUserRequest;
 import com.fiap.gestao.restaurante.dto.request.UserRequest;
 import com.fiap.gestao.restaurante.dto.response.ApiResponse;
 import com.fiap.gestao.restaurante.dto.response.UserResponse;
+import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
 import com.fiap.gestao.restaurante.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -158,6 +159,43 @@ class UserControllerTest {
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(userService).deleteUser(userId);
+    }
+    @Test
+    @DisplayName("Deve retornar erro ao tentar criar um usuário e lançar exceção")
+    void shouldReturnErrorWhenCreatingUserThrowsException() {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setNome("John Doe");
+        userRequest.setEmail("john.doe@example.com");
+
+        when(userService.createUser(any(UserRequest.class)))
+                .thenThrow(new SmartRestaurantException("Erro ao criar usuário", HttpStatus.BAD_REQUEST));
+
+        ResponseEntity<UserResponse> response = userController.createUser(userRequest);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(userService).createUser(userRequest);
+    }
+
+    @Test
+    @DisplayName("Deve retornar usuários ao buscar por tipo")
+    void shouldReturnUsersByType() {
+        UserTypeEnum tipo = UserTypeEnum.CLIENTE;
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(1L);
+        userResponse.setNome("John Doe");
+
+        List<UserResponse> users = List.of(userResponse);
+
+        when(userService.getUsersByType(tipo)).thenReturn(users);
+
+        ResponseEntity<List<UserResponse>> response = userController.getUsersByType(tipo);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size());
+        assertEquals(userResponse.getNome(), response.getBody().get(0).getNome());
+        verify(userService).getUsersByType(tipo);
     }
 
 }

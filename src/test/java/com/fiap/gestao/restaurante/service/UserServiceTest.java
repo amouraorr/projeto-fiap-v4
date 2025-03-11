@@ -3,20 +3,25 @@ package com.fiap.gestao.restaurante.service;
 import com.fiap.gestao.restaurante.dto.request.UpdateUserRequest;
 import com.fiap.gestao.restaurante.dto.request.UserRequest;
 import com.fiap.gestao.restaurante.dto.response.UserResponse;
+import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
 import com.fiap.gestao.restaurante.mapper.UserMapper;
 import com.fiap.gestao.restaurante.model.Login;
 import com.fiap.gestao.restaurante.model.User;
 import com.fiap.gestao.restaurante.repository.LoginRepository;
 import com.fiap.gestao.restaurante.repository.UserRepository;
+import com.fiap.gestao.restaurante.specifications.UserSpecification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -202,5 +207,27 @@ class UserServiceTest {
 
         assertEquals(String.format("Usuário com ID %d não encontrado.", userId), exception.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+    }
+
+    @Test
+    @DisplayName("Deve buscar usuários pelo tipo")
+    public void testGetUsersByType() {
+        UserTypeEnum userType = UserTypeEnum.CLIENTE;
+        User user = new User();
+        user.setNome("Test User");
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setNome("Test User");
+
+        when(userRepository.findByUserType(userType)).thenReturn(Arrays.asList(user));
+        when(userMapper.toResponses(any())).thenReturn(Arrays.asList(userResponse));
+
+        List<UserResponse> result = userService.getUsersByType(userType);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Test User", result.get(0).getNome());
+        verify(userRepository).findByUserType(userType);
+        verify(userMapper).toResponses(any());
     }
 }
