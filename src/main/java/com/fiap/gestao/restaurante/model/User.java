@@ -47,7 +47,7 @@ public class User {
     @Column(name = "user_type", nullable = false)
     private UserTypeEnum userType;
 
-    @OneToMany(mappedBy = "proprietario", fetch = FetchType.EAGER) // Esta linha para o relacionamento com Restaurant
+    @OneToMany(mappedBy = "proprietario", fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Restaurant> restaurantes;
 }

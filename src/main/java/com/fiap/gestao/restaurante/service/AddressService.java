@@ -83,4 +83,8 @@ public class AddressService {
 
         return mapper.toResponse(addressRepository.save(address));
     }
+
+    public void deleteAll() {
+        addressRepository.deleteAll();
+    }
 }
