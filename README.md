@@ -1,5 +1,8 @@
 # Gerenciamento de Usuários - Backend
 
+Link para o video explicativo da aplicação:
+https://www.icloud.com/iclouddrive/0e0xGFjc42cmUUrHd9MaGQG_g#VideoFiap
+
 ## Introdução
 
 Este projeto faz parte de um desafio técnico para desenvolver um sistema de gerenciamento de usuários para um grupo de
