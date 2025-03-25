@@ -2,7 +2,7 @@ package com.fiap.gestao.restaurante.mapper;
 
 import com.fiap.gestao.restaurante.dto.request.LoginRequest;
 import com.fiap.gestao.restaurante.dto.response.LoginResponse;
-import com.fiap.gestao.restaurante.model.Login;
+import com.fiap.gestao.restaurante.model.Credenciais;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -22,7 +22,7 @@ class LoginMapperTest {
         loginRequest.setLogin("user");
         loginRequest.setSenha("password");
 
-        Login login = loginMapper.toModel(loginRequest);
+        Credenciais login = loginMapper.toModel(loginRequest);
 
         assertEquals("user", login.getLogin());
         assertEquals("password", login.getSenha());
@@ -31,7 +31,7 @@ class LoginMapperTest {
     @Test
     @DisplayName("Deve mapear Login para LoginResponse")
     void shouldMapLoginToLoginResponse() {
-        Login login = new Login();
+        Credenciais login = new Credenciais();
         login.setId(1L);
         login.setLogin("user");
         login.setSenha("encodedPassword");
@@ -40,6 +40,5 @@ class LoginMapperTest {
 
         assertEquals(1L, loginResponse.getId());
         assertEquals("user", loginResponse.getLogin());
-        // Aqui você pode adicionar mais verificações se LoginResponse tiver mais atributos
     }
 }

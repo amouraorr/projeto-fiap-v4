@@ -172,35 +172,4 @@ public class AddressServiceTest {
 
         verify(addressRepository).deleteAll();
     }
-
-    //TODO: Retestar que não está passando ou remover se nescessário
-    /*@Test
-    @DisplayName("Deve lançar exceção ao tentar atualizar o usuário de um endereço")
-    public void testUpdateAddress_UserMismatch() {
-        when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
-        addressRequest.setIdUsuario(2L);
-
-        SmartRestaurantException exception = assertThrows(SmartRestaurantException.class, () -> {
-            addressService.update(1L, addressRequest);
-        });
-
-        assertEquals("Não é permitido atualizar o usuário", exception.getMessage());
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-    }*/
-
-    /*@Test
-    @DisplayName("Deve atualizar um endereço com sucesso")
-    public void testUpdateAddress() {
-        user.setId(1L);
-        address.setUsuario(user);
-
-        when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
-        when(mapper.toResponse(any(Address.class))).thenReturn(new AddressResponse());
-
-        AddressResponse response = addressService.update(1L, addressRequest);
-
-        assertNotNull(response);
-        verify(addressRepository).save(any(Address.class));
-    }
-*/
 }

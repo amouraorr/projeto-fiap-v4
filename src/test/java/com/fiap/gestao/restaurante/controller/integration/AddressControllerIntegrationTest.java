@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiap.gestao.restaurante.dto.request.AddressRequest;
 import com.fiap.gestao.restaurante.dto.response.AddressResponse;
 import com.fiap.gestao.restaurante.enums.UserTypeEnum;
-import com.fiap.gestao.restaurante.model.Login;
+import com.fiap.gestao.restaurante.model.Credenciais;
 import com.fiap.gestao.restaurante.model.User;
 import com.fiap.gestao.restaurante.repository.LoginRepository;
 import com.fiap.gestao.restaurante.repository.UserRepository;
@@ -49,7 +49,7 @@ class AddressControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        Login login = new Login();
+        Credenciais login = new Credenciais();
         login.setLogin("usuario@example.com");
         login.setSenha("senhaSegura");
         login.setTipo(UserTypeEnum.CLIENTE);
@@ -131,60 +131,4 @@ class AddressControllerIntegrationTest {
                 .andExpect(jsonPath("$.data").isArray())
                 .andExpect(jsonPath("$.data.length()").value(1));
     }
-
-    //TODO: Retestar que não está passando ou remover se nescessário
-    /*@Test
-    @DisplayName("Deve atualizar o endereço com sucesso")
-    void shouldUpdateAddressSuccessfully() throws Exception {
-        AddressRequest addressRequest = new AddressRequest();
-        addressRequest.setRua("123 Main St");
-        addressRequest.setBairro("Bairro nobre");
-        addressRequest.setNumero("500");
-        addressRequest.setComplemento("apartamento 25");
-        addressRequest.setPontoDeReferencia("condomínio morada nobre");
-        addressRequest.setCidade("Springfield");
-        addressRequest.setEstado("SP");
-        addressRequest.setCep("12345678");
-        addressRequest.setIdUsuario(userId);
-
-        AddressResponse createdAddress = addressService.create(addressRequest);
-
-        AddressRequest updatedAddressRequest = new AddressRequest();
-        updatedAddressRequest.setRua("456 Elm St");
-        updatedAddressRequest.setBairro("Bairro nobre");
-        updatedAddressRequest.setNumero("600");
-        updatedAddressRequest.setComplemento("apartamento 30");
-        updatedAddressRequest.setPontoDeReferencia("condomínio morada nobre");
-        updatedAddressRequest.setCidade("Springfield");
-        updatedAddressRequest.setEstado("SP");
-        updatedAddressRequest.setCep("87654321");
-        updatedAddressRequest.setIdUsuario(userId);
-
-        mockMvc.perform(patch("/address/{id}", createdAddress.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatedAddressRequest)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.rua").value("456 Elm St"))
-                .andExpect(jsonPath("$.cidade").value("Springfield"));
-    }
-*/
-    /*@Test
-    @DisplayName("Deve deletar o endereço com sucesso")
-    void shouldDeleteAddressSuccessfully() throws Exception {
-        AddressRequest addressRequest = new AddressRequest();
-        addressRequest.setRua("123 Main St");
-        addressRequest.setBairro("Bairro nobre");
-        addressRequest.setNumero("500");
-        addressRequest.setComplemento("apartamento 25");
-        addressRequest.setPontoDeReferencia("condomínio morada nobre");
-        addressRequest.setCidade("Springfield");
-        addressRequest.setEstado("SP");
-        addressRequest.setCep("12345678");
-        addressRequest.setIdUsuario(userId);
-
-        AddressResponse createdAddress = addressService.create(addressRequest);
-
-        mockMvc.perform(delete("/address/{id}", createdAddress.getId()))
-                .andExpect(status().isNoContent());
-    }*/
 }

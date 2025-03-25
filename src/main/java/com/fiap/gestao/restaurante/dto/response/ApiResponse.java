@@ -7,18 +7,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  *
  * @param <T> Tipo dos dados retornados na resposta.
  */
-@JsonInclude(JsonInclude.Include.NON_NULL) // Adiciona esta anotação
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
     private final T data;
     private final String error;
 
     public ApiResponse(T data) {
         this.data = data;
-        this.error = null; // Inicializa como null se não houver erro
+        this.error = null;
     }
 
     public ApiResponse(String error) {
-        this.data = null; // Inicializa como null se houver erro
+        this.data = null;
         this.error = error;
     }
 

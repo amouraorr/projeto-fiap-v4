@@ -122,36 +122,4 @@ class RestaurantControllerIntegrationTest {
         mockMvc.perform(get("/restaurantes/1"))
                 .andExpect(status().isNotFound());
     }
-
-    //TODO: Retestar que não está passando ou remover se nescessário
-    /*@Test
-    @DisplayName("Deve retornar erro ao criar restaurante se o proprietário não for encontrado")
-    public void testCreateRestaurant_UserNotFound() throws Exception {
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
-
-        mockMvc.perform(post("/restaurantes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(restaurantRequest)))
-                .andExpect(status().isBadRequest());
-    }*/
-
-/*    @Test
-    @DisplayName("Deve atualizar um restaurante com sucesso")
-    public void testUpdateRestaurant() throws Exception {
-        when(restaurantService.save(any(Restaurant.class))).thenReturn(restaurant);
-
-        mockMvc.perform(post("/restaurantes/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(restaurant)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Test Restaurant"));
-    }*/
-
-/*
-    @Test
-    @DisplayName("Deve deletar um restaurante com sucesso")
-    public void testDeleteRestaurant() throws Exception {
-        mockMvc.perform(post("/restaurantes/1"))
-                .andExpect(status().isNoContent());
-    }*/
 }

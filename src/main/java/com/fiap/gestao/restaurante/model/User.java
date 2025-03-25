@@ -41,7 +41,7 @@ public class User {
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_login", nullable = false)
-    private Login login;
+    private Credenciais login;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type", nullable = false)

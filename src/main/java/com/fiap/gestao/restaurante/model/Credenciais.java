@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @ToString(exclude = "senha")
 @Entity
 @Table(name = "credenciais")
-public class Login {
+public class Credenciais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,19 +6,16 @@ import com.fiap.gestao.restaurante.dto.response.UserResponse;
 import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
 import com.fiap.gestao.restaurante.mapper.UserMapper;
-import com.fiap.gestao.restaurante.model.Login;
+import com.fiap.gestao.restaurante.model.Credenciais;
 import com.fiap.gestao.restaurante.model.User;
 import com.fiap.gestao.restaurante.repository.LoginRepository;
 import com.fiap.gestao.restaurante.repository.UserRepository;
-import com.fiap.gestao.restaurante.specifications.UserSpecification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
 import java.util.Arrays;
@@ -55,7 +52,7 @@ class UserServiceTest {
         userRequest.setNome("John Doe");
         userRequest.setEmail("john.doe@example.com");
 
-        Login login = new Login();
+        Credenciais login = new Credenciais();
         login.setId(1L);
 
         User user = new User();

@@ -4,7 +4,7 @@ import com.fiap.gestao.restaurante.dto.request.UpdateUserRequest;
 import com.fiap.gestao.restaurante.dto.request.UserRequest;
 import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
-import com.fiap.gestao.restaurante.model.Login;
+import com.fiap.gestao.restaurante.model.Credenciais;
 import com.fiap.gestao.restaurante.model.User;
 import com.fiap.gestao.restaurante.repository.LoginRepository;
 import com.fiap.gestao.restaurante.repository.UserRepository;
@@ -43,7 +43,7 @@ public class UserServiceIntegrationTest {
     @BeforeEach
     void setUp() {
         String uniqueLogin = "john_doe_" + counter++;
-        Login login = new Login();
+        Credenciais login = new Credenciais();
         login.setLogin(uniqueLogin);
         login.setSenha("password123");
         login.setTipo(UserTypeEnum.CLIENTE);
@@ -112,7 +112,7 @@ public class UserServiceIntegrationTest {
     @Test
     @DisplayName("Deve salvar um usuário com login")
     void shouldSaveUserWithLogin() {
-        Login login = new Login();
+        Credenciais login = new Credenciais();
         login.setLogin("john_doe");
         login.setSenha("password123");
         login.setTipo(UserTypeEnum.CLIENTE);
@@ -128,59 +128,4 @@ public class UserServiceIntegrationTest {
 
         assertNotNull(savedUser.getId());
     }
-
-    //TODO: Retestar que não está passando ou remover se nescessário
-    /*@Test
-    @DisplayName("Deve atualizar o usuário com sucesso")
-    void shouldUpdateUserSuccessfully() {
-        UpdateUserRequest updatedUserRequest = new UpdateUserRequest();
-        updatedUserRequest.setNome("Jane Doe");
-        updatedUserRequest.setEmail("jane.doe@example.com");
-
-        UserResponse response = userService.updateUser(userId, updatedUserRequest);
-
-        assertNotNull(response);
-        assertEquals("Jane Doe", response.getNome());
-        assertEquals("jane.doe@example.com", response.getEmail());
-    }
-*/
-   /* @Test
-    @DisplayName("Deve deletar o usuário com sucesso")
-    void shouldDeleteUserSuccessfully() {
-
-        Login login = new Login();
-        login.setLogin("john_doe");
-        login.setSenha("password123");
-        login.setTipo(UserTypeEnum.CLIENTE);
-        loginRepository.save(login);
-
-        User user = new User();
-        user.setNome("John Doe");
-        user.setEmail("john.doe@example.com");
-        user.setLogin(login);
-        user = userRepository.save(user);
-
-        userService.deleteUser(user.getId());
-
-        assertFalse(userRepository.findById(user.getId()).isPresent());
-    }*/
-
-/*    @Test
-    @DisplayName("Deve retornar um usuário ao buscar por ID")
-    void shouldReturnUserWhenFoundById() {
-        Login login = new Login();
-        login.setId(1L);
-        loginRepository.save(login);
-
-        User user = new User();
-        user.setNome("John Doe");
-        user.setEmail("john.doe@example.com");
-        user.setLogin(login);
-        user = userRepository.save(user);
-
-        UserResponse response = userService.getUserById(user.getId());
-
-        assertNotNull(response);
-        assertEquals("John Doe", response.getNome());
-    }*/
 }

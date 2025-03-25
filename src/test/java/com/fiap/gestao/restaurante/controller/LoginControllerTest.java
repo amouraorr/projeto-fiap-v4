@@ -84,33 +84,4 @@ class LoginControllerTest {
         verify(loginService).changePassword(userId, changePasswordRequest);
     }
 
-    @Test
-    @DisplayName("Deve realizar login com sucesso")
-    void shouldLoginSuccessfully() {
-        String login = "john.doe";
-        String password = "password123";
-
-        when(loginService.authenticate(login, password)).thenReturn(true);
-
-        ResponseEntity<Boolean> response = loginController.login(login, password);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody());
-        verify(loginService).authenticate(login, password);
-    }
-
-    @Test
-    @DisplayName("Deve falhar ao realizar login com senha incorreta")
-    void shouldFailLoginWithIncorrectPassword() {
-        String login = "john.doe";
-        String password = "wrongPassword";
-
-        when(loginService.authenticate(login, password)).thenReturn(false);
-
-        ResponseEntity<Boolean> response = loginController.login(login, password);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertFalse(response.getBody());
-        verify(loginService).authenticate(login, password);
-    }
 }

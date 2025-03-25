@@ -17,10 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -104,36 +102,5 @@ class MenuItemControllerIntegrationTest {
         mockMvc.perform(delete("/cardapio/1"))
                 .andExpect(status().isNoContent());
     }
-
-
-    //TODO: Retestar que não está passando ou remover se nescessário
-    /*@Test
-    @DisplayName("Deve listar todos os itens do cardápio com sucesso")
-    public void testGetAllMenuItems() throws Exception {
-        when(menuItemService.findAll()).thenReturn(Arrays.asList(menuItem));
-
-        MvcResult result = mockMvc.perform(get("/cardapio"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String jsonResponse = result.getResponse().getContentAsString();
-        System.out.println("Response JSON: " + jsonResponse);
-
-        mockMvc.perform(get("/cardapio"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].nome").value("Test Menu Item"));
-    }*/
-
-/*
-    @Test
-    @DisplayName("Deve retornar item do cardápio por ID com sucesso")
-    public void testGetMenuItemById() throws Exception {
-        when(menuItemService.findById(1L)).thenReturn(menuItem);
-
-        mockMvc.perform(get("/cardapio/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Test Menu Item"));
-    }
-*/
 
 }

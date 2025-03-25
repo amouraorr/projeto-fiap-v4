@@ -5,7 +5,7 @@ import com.fiap.gestao.restaurante.dto.request.LoginRequest;
 import com.fiap.gestao.restaurante.dto.response.LoginResponse;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
 import com.fiap.gestao.restaurante.mapper.LoginMapper;
-import com.fiap.gestao.restaurante.model.Login;
+import com.fiap.gestao.restaurante.model.Credenciais;
 import com.fiap.gestao.restaurante.repository.LoginRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class LoginServiceTest {
         loginRequest.setLogin("user");
         loginRequest.setSenha("password");
 
-        Login login = new Login();
+        Credenciais login = new Credenciais();
         login.setLogin("user");
         login.setSenha("encodedPassword");
 
@@ -55,8 +55,8 @@ class LoginServiceTest {
 
         when(mapper.toModel(any(LoginRequest.class))).thenReturn(login);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-        when(loginRepository.save(any(Login.class))).thenReturn(login);
-        when(mapper.toResponse(any(Login.class))).thenReturn(loginResponse);
+        when(loginRepository.save(any(Credenciais.class))).thenReturn(login);
+        when(mapper.toResponse(any(Credenciais.class))).thenReturn(loginResponse);
 
         LoginResponse response = loginService.create(loginRequest);
 
@@ -72,15 +72,15 @@ class LoginServiceTest {
         changePasswordRequest.setCurrentPassword("oldPassword");
         changePasswordRequest.setNewPassword("newPassword");
 
-        Login login = new Login();
+        Credenciais login = new Credenciais();
         login.setId(userId);
         login.setSenha("encodedOldPassword");
 
         when(loginRepository.findById(userId)).thenReturn(Optional.of(login));
         when(passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), login.getSenha())).thenReturn(true);
         when(passwordEncoder.encode(changePasswordRequest.getNewPassword())).thenReturn("encodedNewPassword");
-        when(loginRepository.save(any(Login.class))).thenReturn(login);
-        when(mapper.toResponse(any(Login.class))).thenReturn(new LoginResponse());
+        when(loginRepository.save(any(Credenciais.class))).thenReturn(login);
+        when(mapper.toResponse(any(Credenciais.class))).thenReturn(new LoginResponse());
 
         LoginResponse response = loginService.changePassword(userId, changePasswordRequest);
 
@@ -115,7 +115,7 @@ class LoginServiceTest {
         changePasswordRequest.setCurrentPassword("wrongOldPassword");
         changePasswordRequest.setNewPassword("newPassword");
 
-        Login login = new Login();
+        Credenciais login = new Credenciais();
         login.setId(userId);
         login.setSenha("encodedOldPassword");
 
@@ -158,7 +158,7 @@ class LoginServiceTest {
         String login = "user";
         String password = "password";
 
-        Login foundLogin = new Login();
+        Credenciais foundLogin = new Credenciais();
         foundLogin.setLogin(login);
         foundLogin.setSenha("encodedPassword");
 
@@ -177,7 +177,7 @@ class LoginServiceTest {
         String login = "user";
         String password = "password";
 
-        when(loginRepository.findByLogin(login)).thenReturn(Optional.empty()); // Simula login não encontrado
+        when(loginRepository.findByLogin(login)).thenReturn(Optional.empty());
 
         SmartRestaurantException exception = assertThrows(SmartRestaurantException.class, () -> {
             loginService.authenticate(login, password);

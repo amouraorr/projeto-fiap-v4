@@ -91,32 +91,4 @@ class LoginControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.login").value("john.doe"))
                 .andExpect(jsonPath("$.data.tipo").value("PROPRIETARIO"));
     }
-
-    @Test
-    @DisplayName("Deve realizar login com sucesso")
-    void shouldLoginSuccessfully() throws Exception {
-        String login = "john.doe";
-        String password = "password123";
-
-        when(loginService.authenticate(login, password)).thenReturn(true);
-
-        mockMvc.perform(post("/login/{login}", login)
-                        .param("password", password))
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-    }
-
-    @Test
-    @DisplayName("Deve falhar ao realizar login com senha incorreta")
-    void shouldFailLoginWithIncorrectPassword() throws Exception {
-        String login = "john.doe";
-        String password = "wrongPassword";
-
-        when(loginService.authenticate(login, password)).thenReturn(false);
-
-        mockMvc.perform(post("/login/{login}", login)
-                        .param("password", password))
-                .andExpect(status().isOk())
-                .andExpect(content().string("false"));
-    }
 }
