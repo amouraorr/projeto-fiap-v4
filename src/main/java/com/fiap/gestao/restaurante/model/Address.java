@@ -1,5 +1,6 @@
 package com.fiap.gestao.restaurante.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -52,6 +53,7 @@ public class Address {
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
+    @JsonBackReference
     private User usuario;
 
 }

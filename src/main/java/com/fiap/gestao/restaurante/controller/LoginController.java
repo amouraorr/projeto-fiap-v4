@@ -40,11 +40,10 @@ public class LoginController {
         return ResponseEntity.ok(new ApiResponse<>(updated, null));
     }
 
-    @PostMapping("/{login}")
+    @PostMapping("/login")
     @Operation(summary = "Realizar login", description = "Realiza login com senha.")
-    public ResponseEntity<Boolean> login(@PathVariable String login, @Valid @RequestParam String password) {
-        var authenticated = loginService.authenticate(login, password);
+    public ResponseEntity<Boolean> login(@Valid @RequestBody LoginRequest loginRequest) {
+        var authenticated = loginService.authenticate(loginRequest.getLogin(), loginRequest.getSenha());
         return ResponseEntity.ok(authenticated);
-
     }
 }

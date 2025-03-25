@@ -3,6 +3,7 @@ package com.fiap.gestao.restaurante.service;
 import com.fiap.gestao.restaurante.dto.request.UpdateUserRequest;
 import com.fiap.gestao.restaurante.dto.request.UserRequest;
 import com.fiap.gestao.restaurante.dto.response.UserResponse;
+import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
 import com.fiap.gestao.restaurante.mapper.UserMapper;
 import com.fiap.gestao.restaurante.repository.LoginRepository;
@@ -28,7 +29,6 @@ public class UserService {
     @Autowired
     private LoginRepository loginRepository;
 
-
     @Autowired
     private UserMapper userMapper;
 
@@ -39,9 +39,12 @@ public class UserService {
                 () -> new SmartRestaurantException("Login não cadastrado. Login é obrigatório para cadastro de usuário, por favor crie primeiro um login",
                         HttpStatus.BAD_REQUEST)
         );
+
         var user = userMapper.toModel(userRequest);
         user.setLogin(login);
-        return userMapper.toResponse(userRepository.save(user));
+
+        userRepository.save(user);
+        return userMapper.toResponse(user);
     }
 
     public UserResponse updateUser(Long id, UpdateUserRequest updatedUserRequest) {
@@ -53,9 +56,9 @@ public class UserService {
         user.setNome(updatedUserRequest.getNome());
         user.setEmail(updatedUserRequest.getEmail());
 
-        return userMapper.toResponse(userRepository.save(user));
+        user = userRepository.save(user);
+        return userMapper.toResponse(user);
     }
-
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
@@ -70,7 +73,6 @@ public class UserService {
                 userRepository.findById(id)
                         .orElseThrow(() -> new SmartRestaurantException(
                                 String.format("Usuário com ID %d não encontrado.", id), HttpStatus.NOT_FOUND)));
-
     }
 
     public List<UserResponse> getAllUsers() {
@@ -82,4 +84,9 @@ public class UserService {
         return userMapper.toResponses(userRepository.findAll(spec));
     }
 
+    public List<UserResponse> getUsersByType(UserTypeEnum tipo) {
+        LOGGER.info("Buscando usuários do tipo: {}", tipo);
+        var users = userRepository.findByUserType(tipo);
+        return userMapper.toResponses(users);
+    }
 }

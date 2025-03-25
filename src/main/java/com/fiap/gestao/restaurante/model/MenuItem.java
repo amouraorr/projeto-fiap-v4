@@ -1,33 +1,38 @@
 package com.fiap.gestao.restaurante.model;
 
-import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@ToString(exclude = "senha")
+@EqualsAndHashCode
 @Entity
-@Table(name = "credenciais")
-public class Login {
+@Table(name = "item_cardapio")
+public class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 50)
-    private String login;
-
     @Column(length = 150, nullable = false)
-    private String senha;
+    private String nome;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_de_usuario", nullable = false)
-    private UserTypeEnum tipo;
+    @Column(length = 500)
+    private String descricao;
+
+    @Column(nullable = false)
+    private BigDecimal preco;
+
+    @Column(name = "disponibilidade_local", nullable = false)
+    private boolean disponibilidadeLocal;
+
+    @Column(name = "caminho_foto", length = 250)
+    private String caminhoFoto;
 
     @CreationTimestamp
     @Column(name = "criado_em", nullable = false)

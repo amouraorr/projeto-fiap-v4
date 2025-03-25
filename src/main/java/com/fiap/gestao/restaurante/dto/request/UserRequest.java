@@ -25,4 +25,8 @@ public class UserRequest {
     @Schema(description = "ID do login, deve ser válido", example = "login")
     @NotNull(message = "O ID do login é obrigatório")
     private Long idLogin;
+
+    @Schema(description = "Tipo de usuário, deve ser CLIENTE ou PROPRIETARIO ", example = "CLIENTE")
+    @NotBlank(message = "O tipo de usuário é obrigatório")
+    private String userType;
 }

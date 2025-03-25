@@ -4,6 +4,7 @@ import com.fiap.gestao.restaurante.dto.request.UpdateUserRequest;
 import com.fiap.gestao.restaurante.dto.request.UserRequest;
 import com.fiap.gestao.restaurante.dto.response.ApiResponse;
 import com.fiap.gestao.restaurante.dto.response.UserResponse;
+import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import com.fiap.gestao.restaurante.exception.SmartRestaurantException;
 import com.fiap.gestao.restaurante.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,13 +30,23 @@ public class UserController {
 
 
     @PostMapping
-    @Operation(summary = "Criação de usuário", description = "Cria um novo usuário com os dados fornecidos.")
+    @Operation(summary = "Criar novo usuário", description = "Cria um novo usuário com os dados fornecidos.")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
-        LOGGER.info("Iniciando criação de usuário...");
-        LOGGER.debug("Recebendo requisição para criar usuário: {}", userRequest);
+        try {
+            UserResponse createdUser = userService.createUser(userRequest);
+            return ResponseEntity.ok(createdUser);
+        } catch (SmartRestaurantException e) {
+            return ResponseEntity.badRequest().body(null); // Retorna null ou uma resposta de erro apropriada
+        }
+    }
 
-        var createdUser = userService.createUser(userRequest);
-        return ResponseEntity.ok(createdUser);
+    @GetMapping("/tipo/{tipo}")
+    @Operation(summary = "Buscar usuários por tipo", description = "Retorna usuários com base no tipo fornecido.")
+    public ResponseEntity<List<UserResponse>> getUsersByType(@PathVariable UserTypeEnum tipo) {
+        LOGGER.info("Iniciando pesquisa de usuários por tipo: {}", tipo);
+
+        var users = userService.getUsersByType(tipo);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")

@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 public class UserSpecification {
 
+    private UserSpecification() {
+
+    }
+
     public static Specification<User> filtros(String nome, String email) {
         return (root, query, builder) -> {
             var predicates = new ArrayList<Predicate>();
@@ -19,7 +23,7 @@ public class UserSpecification {
                 predicates.add(builder.equal(root.get("email"), email));
             }
 
-            return builder.and(predicates.toArray(new Predicate[0]));
+            return predicates.isEmpty() ? builder.conjunction() : builder.and(predicates.toArray(new Predicate[0]));
         };
     }
 }

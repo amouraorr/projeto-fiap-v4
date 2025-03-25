@@ -47,7 +47,7 @@ public class LoginService {
         return mapper.toResponse(loginRepository.save(login));
     }
 
-    private String encodePassword(String password) {
+    String encodePassword(String password) {
         if (password != null && !password.isBlank()) {
             return passwordEncoder.encode(password);
         } else {

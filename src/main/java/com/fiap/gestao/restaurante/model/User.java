@@ -1,5 +1,7 @@
 package com.fiap.gestao.restaurante.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fiap.gestao.restaurante.enums.UserTypeEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,9 +36,18 @@ public class User {
     private LocalDateTime atualizadoEm;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<Address> enderecos;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_login", nullable = false)
-    private Login login;
+    private Credenciais login;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type", nullable = false)
+    private UserTypeEnum userType;
+
+    @OneToMany(mappedBy = "proprietario", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<Restaurant> restaurantes;
 }
